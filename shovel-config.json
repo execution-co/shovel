@@ -1,0 +1,142 @@
+{
+    "pg_url": "postgres:///shovel",
+    "eth_sources": [
+      {
+        "name": "base",
+        "chain_id": 8453,
+        "urls": ["http://base-node:8545"]
+      },
+      {
+        "name": "mainnet",
+        "chain_id": 1,
+        "urls": ["http://reth-node:8545"]
+      }
+    ],
+    "integrations": [
+      {
+        "name": "filled-v3-relay",
+        "enabled": true,
+        "sources": [
+          {
+            "name": "base"
+          },
+          {
+            "name": "mainnet"
+          }
+        ],
+        "table": {
+          "name": "filled_v3_relays",
+          "columns": [
+            { "name": "input_token",           "type": "bytea" },
+            { "name": "output_token",          "type": "bytea" },
+            { "name": "input_amount",          "type": "numeric" },
+            { "name": "output_amount",         "type": "numeric" },
+            { "name": "repayment_chain_id",    "type": "numeric" },
+            { "name": "origin_chain_id",       "type": "numeric" },
+            { "name": "deposit_id",            "type": "numeric" },
+            { "name": "fill_deadline",         "type": "numeric" },
+            { "name": "exclusivity_deadline",  "type": "numeric" },
+            { "name": "exclusive_relayer",     "type": "bytea" },
+            { "name": "relayer",               "type": "bytea" },
+            { "name": "depositor",             "type": "bytea" },
+            { "name": "recipient",             "type": "bytea" },
+            { "name": "message",               "type": "bytea" },
+            { "name": "log_addr",              "type": "bytea" }
+          ]
+        },
+        "block": [
+          {
+            "name": "log_addr",
+            "column": "log_addr",
+            "filter_op": "contains",
+            "filter_arg": [
+              "0xYOUR_CONTRACT_ADDRESS_HERE"
+            ]
+          }
+        ],
+        "event": {
+          "name": "FilledV3Relay",
+          "type": "event",
+          "anonymous": false,
+          "inputs": [
+            { "indexed": false, "name": "inputToken",         "type": "address", "column": "input_token" },
+            { "indexed": false, "name": "outputToken",        "type": "address", "column": "output_token" },
+            { "indexed": false, "name": "inputAmount",        "type": "uint256", "column": "input_amount" },
+            { "indexed": false, "name": "outputAmount",       "type": "uint256", "column": "output_amount" },
+            { "indexed": false, "name": "repaymentChainId",   "type": "uint256", "column": "repayment_chain_id" },
+            { "indexed": true,  "name": "originChainId",      "type": "uint256", "column": "origin_chain_id" },
+            { "indexed": true,  "name": "depositId",          "type": "uint32",  "column": "deposit_id" },
+            { "indexed": false, "name": "fillDeadline",       "type": "uint32",  "column": "fill_deadline" },
+            { "indexed": false, "name": "exclusivityDeadline","type": "uint32",  "column": "exclusivity_deadline" },
+            { "indexed": false, "name": "exclusiveRelayer",   "type": "address", "column": "exclusive_relayer" },
+            { "indexed": true,  "name": "relayer",            "type": "address", "column": "relayer" },
+            { "indexed": false, "name": "depositor",          "type": "address", "column": "depositor" },
+            { "indexed": false, "name": "recipient",          "type": "address", "column": "recipient" },
+            { "indexed": false, "name": "message",            "type": "bytes",   "column": "message" }
+          ]
+        }
+      },
+      {
+        "name": "v3-funds-deposited",
+        "enabled": true,
+        "sources": [
+          {
+            "name": "base"
+          },
+          {
+            "name": "mainnet"
+          }
+        ],
+        "table": {
+          "name": "v3_funds_deposited",
+          "columns": [
+            { "name": "input_token",            "type": "bytea" },
+            { "name": "output_token",           "type": "bytea" },
+            { "name": "input_amount",           "type": "numeric" },
+            { "name": "output_amount",          "type": "numeric" },
+            { "name": "destination_chain_id",   "type": "numeric" },
+            { "name": "deposit_id",             "type": "numeric" },
+            { "name": "quote_timestamp",        "type": "numeric" },
+            { "name": "fill_deadline",          "type": "numeric" },
+            { "name": "exclusivity_deadline",   "type": "numeric" },
+            { "name": "depositor",              "type": "bytea" },
+            { "name": "recipient",              "type": "bytea" },
+            { "name": "exclusive_relayer",      "type": "bytea" },
+            { "name": "message",                "type": "bytea" },
+            { "name": "log_addr",               "type": "bytea" }
+          ]
+        },
+        "block": [
+          {
+            "name": "log_addr",
+            "column": "log_addr",
+            "filter_op": "contains",
+            "filter_arg": [
+              "0xYOUR_CONTRACT_ADDRESS_HERE"
+            ]
+          }
+        ],
+        "event": {
+          "name": "V3FundsDeposited",
+          "type": "event",
+          "anonymous": false,
+          "inputs": [
+            { "indexed": false, "name": "inputToken",        "type": "address", "column": "input_token" },
+            { "indexed": false, "name": "outputToken",       "type": "address", "column": "output_token" },
+            { "indexed": false, "name": "inputAmount",       "type": "uint256", "column": "input_amount" },
+            { "indexed": false, "name": "outputAmount",      "type": "uint256", "column": "output_amount" },
+            { "indexed": true,  "name": "destinationChainId","type": "uint256", "column": "destination_chain_id" },
+            { "indexed": true,  "name": "depositId",         "type": "uint32",  "column": "deposit_id" },
+            { "indexed": false, "name": "quoteTimestamp",    "type": "uint32",  "column": "quote_timestamp" },
+            { "indexed": false, "name": "fillDeadline",      "type": "uint32",  "column": "fill_deadline" },
+            { "indexed": false, "name": "exclusivityDeadline","type": "uint32", "column": "exclusivity_deadline" },
+            { "indexed": true,  "name": "depositor",         "type": "address", "column": "depositor" },
+            { "indexed": false, "name": "recipient",         "type": "address", "column": "recipient" },
+            { "indexed": false, "name": "exclusiveRelayer",  "type": "address", "column": "exclusive_relayer" },
+            { "indexed": false, "name": "message",           "type": "bytes",   "column": "message" }
+          ]
+        }
+      }
+    ]
+  }
+  
